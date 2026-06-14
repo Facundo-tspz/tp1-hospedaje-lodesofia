@@ -63,7 +63,7 @@ const Admin = () => {
 
   const handleLogout = () => {
     sessionStorage.removeItem('admin_autenticado')
-    setAutenticado(false)
+    window.location.href = '/'
   }
 
   if (!autenticado) {
