@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@theme {
+    --font-farley:"Farley MF",serif;
+    --font-fonseca:"Fonseca Light",sans-serif;
+}
+
+@font-face {
+    font-family: "Farley MF";
+    src: url("/src/assets/fonts/Farley-MF.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: "Fonseca Light";
+    src: url("/src/assets/fonts/Fonseca-Light.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
