@@ -158,14 +158,17 @@ const AdminHabitaciones = () => {
   const [editando, setEditando] = useState<Habitacion | null>(null)
   const [mostrarForm, setMostrarForm] = useState(false)
 
-  const [form, setForm] = useState({
-    nombre: '',
-    descripcion: '',
-    servicios: '',
-    precio: '',
-    capacidad: '',
-    disponible: true,
-  })
+  const serviciosDisponibles = [
+    'WiFi',
+    'TV',
+    'Calefacción',
+    'A/A',
+    'A/A F&C',
+    'Baño Priv.',
+    'Amenities',
+  ]
+
+  const serviciosPorDefecto = ['WiFi', 'Baño Priv.', 'Amenities']
   const [archivo, setArchivo] = useState<File | null>(null)
 
   useEffect(() => {
@@ -180,8 +183,17 @@ const AdminHabitaciones = () => {
     if (data) setHabitaciones(data)
   }
 
+  const [form, setForm] = useState({
+    nombre: '',
+    descripcion: '',
+    servicios: serviciosPorDefecto as string[],
+    precio: '',
+    capacidad: '',
+    disponible: true,
+  })
+
   const resetForm = () => {
-    setForm({ nombre: '', descripcion: '', servicios: '', precio: '', capacidad: '', disponible: true })
+    setForm({ nombre: '', descripcion: '', servicios: serviciosPorDefecto as string[], precio: '', capacidad: '', disponible: true })
     setArchivo(null)
     setEditando(null)
     setMostrarForm(false)
@@ -209,7 +221,7 @@ const AdminHabitaciones = () => {
     const data = {
       nombre: form.nombre,
       descripcion: form.descripcion,
-      servicios: form.servicios.split(',').map((s) => s.trim()).filter(Boolean),
+      servicios: form.servicios,
       precio: parseFloat(form.precio),
       capacidad: parseInt(form.capacidad),
       disponible: form.disponible,
@@ -231,7 +243,7 @@ const AdminHabitaciones = () => {
     setForm({
       nombre: hab.nombre,
       descripcion: hab.descripcion,
-      servicios: hab.servicios?.join(', ') || '',
+      servicios: hab.servicios || [],
       precio: hab.precio.toString(),
       capacidad: hab.capacidad.toString(),
       disponible: hab.disponible,
@@ -305,15 +317,34 @@ const AdminHabitaciones = () => {
               />
             </div>
 
-            <div className="space-y-2">
-              <label className="font-fonseca text-sm text-gray-600">Servicios (separados por coma)</label>
-              <input
-                type="text"
-                value={form.servicios}
-                onChange={(e) => setForm({ ...form, servicios: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg font-fonseca focus:outline-none focus:ring-2 focus:ring-[#D9831A]/50"
-                placeholder="WiFi, TV, A/A"
-              />
+            <div className="space-y-2 md:col-span-2">
+              <label className="font-fonseca text-sm text-gray-600">Servicios</label>
+              <div className="flex flex-wrap gap-2">
+                {serviciosDisponibles.map((s) => {
+                  const seleccionado = form.servicios.includes(s)
+                  return (
+                    <button
+                      key={s}
+                      type="button"
+                      onClick={() =>
+                        setForm({
+                          ...form,
+                          servicios: seleccionado
+                            ? form.servicios.filter((item) => item !== s)
+                            : [...form.servicios, s],
+                        })
+                      }
+                      className={`px-4 py-1.5 rounded-full text-sm font-fonseca border transition ${
+                        seleccionado
+                          ? 'bg-[#D9831A] text-white border-[#D9831A]'
+                          : 'bg-white text-gray-600 border-gray-300 hover:border-[#D9831A]'
+                      }`}
+                    >
+                      {s}
+                    </button>
+                  )
+                })}
+              </div>
             </div>
 
             <div className="md:col-span-2 space-y-2">
