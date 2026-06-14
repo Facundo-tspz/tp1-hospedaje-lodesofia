@@ -6,6 +6,7 @@ import SobreNosotros from './pages/SobreNosotros'
 import PreguntasFrecuentes from './pages/PreguntasFrecuentes'
 import AcercaDelSistema from './pages/AcercaDelSistema'
 import GaleriaPage from './pages/GaleriaPage'
+import HabitacionDetalle from './pages/HabitacionDetalle'
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/preguntas-frecuentes" element={<PreguntasFrecuentes />} />
           <Route path="/acerca-del-sistema" element={<AcercaDelSistema />} />
           <Route path="/galeria" element={<GaleriaPage />} />
+          <Route path="/habitacion/:id" element={<HabitacionDetalle />} />
         </Route>
         <Route path="/admin" element={<Admin />} />
       </Routes>
