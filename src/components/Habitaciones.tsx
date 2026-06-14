@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { supabase } from '../supabase/client'
 import CardHabitacion from './CardHabitacion'
 
@@ -16,11 +16,7 @@ interface Habitacion {
 const Habitaciones = () => {
   const [habitaciones, setHabitaciones] = useState<Habitacion[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [isDragging, setIsDragging] = useState(false)
-  const [startX, setStartX] = useState(0)
-  const [dragOffset, setDragOffset] = useState(0)
   const [cardsPerView, setCardsPerView] = useState(3)
-  const carruselRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const fetchHabitaciones = async () => {
@@ -47,34 +43,10 @@ const Habitaciones = () => {
   useEffect(() => {
     if (habitaciones.length === 0) return
     const interval = setInterval(() => {
-      if (!isDragging) {
-        setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1))
-      }
+      setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1))
     }, 5000)
     return () => clearInterval(interval)
-  }, [habitaciones.length, maxIndex, isDragging])
-
-  const handleMouseDown = (e: React.MouseEvent) => {
-    setIsDragging(true)
-    setStartX(e.clientX)
-    setDragOffset(0)
-  }
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging) return
-    setDragOffset(e.clientX - startX)
-  }
-
-  const handleMouseUp = () => {
-    if (!isDragging) return
-    if (dragOffset < -80) {
-      setCurrentIndex((prev) => Math.min(prev + 1, maxIndex))
-    } else if (dragOffset > 80) {
-      setCurrentIndex((prev) => Math.max(prev - 1, 0))
-    }
-    setIsDragging(false)
-    setDragOffset(0)
-  }
+  }, [habitaciones.length, maxIndex])
 
   if (habitaciones.length === 0) {
     return (
@@ -99,27 +71,20 @@ const Habitaciones = () => {
         <button
           onClick={() => setCurrentIndex((prev) => Math.max(prev - 1, 0))}
           disabled={currentIndex === 0}
-          className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 w-10 h-10 rounded-full bg-white shadow-md items-center justify-center text-gray-700 hover:shadow-lg transition disabled:opacity-30"
+          className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-5 z-10 w-12 h-12 rounded-full bg-white shadow-lg items-center justify-center text-gray-600 hover:text-[#D9831A] hover:shadow-xl transition-all duration-300 disabled:opacity-20 disabled:cursor-not-allowed text-2xl"
         >
-          ◀
+          ❮
         </button>
 
         <button
           onClick={() => setCurrentIndex((prev) => Math.min(prev + 1, maxIndex))}
           disabled={currentIndex >= maxIndex}
-          className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-10 h-10 rounded-full bg-white shadow-md items-center justify-center text-gray-700 hover:shadow-lg transition disabled:opacity-30"
+          className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-5 z-10 w-12 h-12 rounded-full bg-white shadow-lg items-center justify-center text-gray-600 hover:text-[#D9831A] hover:shadow-xl transition-all duration-300 disabled:opacity-20 disabled:cursor-not-allowed text-2xl"
         >
-          ▶
+          ❯
         </button>
 
-        <div
-          ref={carruselRef}
-          className="overflow-hidden cursor-grab active:cursor-grabbing select-none"
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseUp}
-        >
+        <div className="overflow-hidden">
           <div
             className="flex gap-6 transition-transform duration-500 ease-out"
             style={{
@@ -144,9 +109,9 @@ const Habitaciones = () => {
             <button
               key={i}
               onClick={() => setCurrentIndex(i)}
-              className={`w-2.5 h-2.5 rounded-full transition-all ${
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
                 i === currentIndex
-                  ? 'bg-[#D9831A] w-6'
+                  ? 'bg-[#D9831A] scale-110'
                   : 'bg-gray-300 hover:bg-gray-400'
               }`}
             />
