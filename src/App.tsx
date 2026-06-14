@@ -5,6 +5,7 @@ import Admin from './pages/Admin'
 import SobreNosotros from './pages/SobreNosotros'
 import PreguntasFrecuentes from './pages/PreguntasFrecuentes'
 import AcercaDelSistema from './pages/AcercaDelSistema'
+import GaleriaPage from './pages/GaleriaPage'
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/sobre-nosotros" element={<SobreNosotros />} />
           <Route path="/preguntas-frecuentes" element={<PreguntasFrecuentes />} />
           <Route path="/acerca-del-sistema" element={<AcercaDelSistema />} />
+          <Route path="/galeria" element={<GaleriaPage />} />
         </Route>
         <Route path="/admin" element={<Admin />} />
       </Routes>

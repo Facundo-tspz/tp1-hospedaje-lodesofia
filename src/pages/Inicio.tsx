@@ -1,14 +1,15 @@
-import Hero from "../components/Hero"
+import Hero from '../components/Hero'
+import Habitaciones from '../components/Habitaciones'
+import Galeria from '../components/Galeria'
 
 const Inicio = () => {
-    return (
-        <>
-            <Hero />
-            <div className="min-h-screen flex items-center justify-center bg-gray-100">
-                <h1 className="text-3xl font-bold text-gray-800">Hospedaje Lo de Sofia</h1>
-            </div>
-        </> 
-    )
+  return (
+    <>
+      <Hero />
+      <Habitaciones />
+      <Galeria />
+    </>
+  )
 }
 
 export default Inicio
