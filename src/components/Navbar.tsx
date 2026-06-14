@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 const navLinks = [
@@ -9,6 +9,16 @@ const navLinks = [
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [adminLogueado, setAdminLogueado] = useState(false)
+
+  useEffect(() => {
+    const check = () => {
+      setAdminLogueado(sessionStorage.getItem('admin_autenticado') === 'true')
+    }
+    check()
+    window.addEventListener('storage', check)
+    return () => window.removeEventListener('storage', check)
+  }, [])
 
   return (
     <header className="sticky top-0 bg-white shadow-sm z-50">
@@ -61,6 +71,18 @@ const Navbar = () => {
                 </Link>
               </li>
             ))}
+            {adminLogueado && (
+              <li>
+                <Link
+                  to="/admin"
+                  onClick={() => setMenuOpen(false)}
+                  className="block font-fonseca text-sm uppercase tracking-wide py-2 hover:opacity-70 transition"
+                  style={{ color: '#D9831A' }}
+                >
+                  Panel Admin
+                </Link>
+              </li>
+            )}
           </ul>
         </div>
       )}
