@@ -289,6 +289,47 @@ La estructura del sitio utiliza etiquetas semánticas de HTML5:
 
 ---
 
+## Funcionalidades pendientes
+
+| Funcionalidad | Estado |
+|---|---|
+| Notificaciones por email al recibir una reserva (EmailJS) | Pendiente |
+| Despliegue en Vercel / Netlify | Pendiente |
+| Modal de reserva con fecha de salida y validación de disponibilidad por rango de fechas | Pendiente |
+| Pestaña "Ocupadas" en admin con auto-liberación al pasar la fecha de salida | Pendiente |
+| Componente Badge flotante global con indicador de disponibilidad general | Pendiente |
+| Página de confirmación de reserva | Pendiente |
+| Modo oscuro | Pendiente |
+
+---
+
+## Mejoras potenciales
+
+- **Rendimiento**: implementar lazy loading en imágenes de galería y páginas pesadas con `React.lazy()` y `Suspense`
+- **UX**: agregar skeleton loaders mientras cargan los datos desde Supabase
+- **SEO**: agregar meta tags dinámicos con `react-helmet-async` para mejorar la indexación
+- **PWA**: convertir en Progressive Web App con Service Worker para soporte offline y carga instantánea
+- **Panel admin**: agregar dashboard con estadísticas (reservas del mes, ingresos estimados, ocupación)
+- **Formulario de reserva**: agregar selector de rango de fechas con calendario visual y cálculo automático del total de noches
+- **Imágenes**: implementar compresión y redimensionado automático al subir a Supabase Storage
+- **Multiidioma**: soporte para inglés y portugués usando `i18next`
+- **Accesibilidad**: mejorar contraste, agregar etiquetas aria y navegación por teclado
+
+---
+
+## Escalabilidad
+
+El proyecto está diseñado para escalar de forma sencilla:
+
+- **Nuevas habitaciones**: se agregan desde el panel admin sin tocar código — aparecen automáticamente en el grid y las pelotitas indicadoras se actualizan solas
+- **Nuevos servicios**: los tags de servicios se definen en un array en `Admin.tsx` y se renderizan dinámicamente
+- **Nuevas secciones en la página**: basta con crear un componente en `pages/`, agregar la ruta en `App.tsx` y el link en `Navbar.tsx`
+- **Base de datos**: Supabase permite agregar columnas y tablas sin migraciones complejas; las consultas se adaptan fácilmente
+- **Autenticación**: si en el futuro se quiere migrar a Supabase Auth (con email y contraseña), la estructura actual lo permite sin reescribir el panel
+- **API propia**: si el proyecto crece, se puede migrar la lógica de Supabase a un backend propio (Node.js, Django, etc.) manteniendo el frontend intacto gracias a la separación de responsabilidades
+
+---
+
 ## Control de Versiones y Despliegue
 
 ### Git / GitHub
