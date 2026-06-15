@@ -38,13 +38,12 @@ Sitio web del hospedaje "Lo de Sofía" en Tinogasta, Catamarca. Desarrollado con
 | Tecnología | Versión | Rol |
 |---|---|---|
 | React | 19 | Biblioteca UI |
-| TypeScript | 5.x | Tipado estático |
-| Vite | 6 | Build tool |
+| TypeScript | 6.x | Tipado estático |
+| Vite | 8 | Build tool |
 | Tailwind CSS | 4 | Estilos utilitarios |
 | React Router DOM | 6 | Enrutamiento SPA |
 | Supabase | — | Base de datos PostgreSQL + Storage |
 | EmailJS | — | Notificaciones por email |
-| react-icons | — | Librería de iconos |
 
 ### Bloques de código
 
@@ -120,9 +119,10 @@ src/
 │   ├── Navbar.tsx       # Barra de navegación sticky con hamburguesa
 │   ├── Hero.tsx         # Hero con imagen, overlay azul y eslogan
 │   ├── CardHabitacion.tsx  # Card de habitación con badge disponible/ocupada
-│   ├── Habitaciones.tsx    # Carrusel 3×1 con auto-rotación y drag
+│   ├── Habitaciones.tsx    # Grid estático de habitaciones con pelotitas indicadoras
 │   ├── Galeria.tsx         # Flyer automático con flechas y dots
-│   └── Footer.tsx          # Pie de página con 3 columnas
+│   ├── Footer.tsx          # Pie de página con 3 columnas
+│   └── ModalReserva.tsx    # Modal de formulario de reserva con validación
 │
 ├── pages/               # Páginas del sitio
 │   ├── Inicio.tsx       # Página principal (Hero + Habitaciones + Galería)
@@ -130,7 +130,8 @@ src/
 │   ├── SobreNosotros.tsx
 │   ├── PreguntasFrecuentes.tsx
 │   ├── AcercaDelSistema.tsx
-│   └── GaleriaPage.tsx  # Galería completa con grid y modal
+│   ├── GaleriaPage.tsx  # Galería completa con grid y modal
+│   └── HabitacionDetalle.tsx  # Página de detalle con botón de reserva
 │
 ├── layout/
 │   └── Layout.tsx       # Layout con Navbar + Outlet + Footer
@@ -151,7 +152,8 @@ src/
 
 | Ruta | Página | Descripción |
 |---|---|---|
-| `/` | Inicio | Hero + Carrusel habitaciones + Flyer galería |
+| `/` | Inicio | Hero + Grid habitaciones + Flyer galería |
+| `/habitacion/:id` | HabitacionDetalle | Detalle de habitación con formulario de reserva |
 | `/sobre-nosotros` | SobreNosotros | Información del hospedaje con logo |
 | `/preguntas-frecuentes` | PreguntasFrecuentes | FAQ del hospedaje |
 | `/acerca-del-sistema` | AcercaDelSistema | Info del sitio y desarrollador |
@@ -189,6 +191,7 @@ Todas las rutas excepto `/admin` usan el Layout compartido (Navbar + Footer).
 - Logo izquierda con icono + nombre escalonado
 - Botón "Inicio" + menú hamburguesa con dropdown
 - Links a Sobre nosotros, Preguntas frecuentes, Acerca del sistema
+- Muestra "Panel Admin" si el usuario está autenticado
 
 ### Hero
 - Imagen de fondo con overlay azul `#034659` al 40%
@@ -196,13 +199,22 @@ Todas las rutas excepto `/admin` usan el Layout compartido (Navbar + Footer).
 - Eslogan "TU HOGAR EN TINOGASTA" en Farley MF blanco
 - Subtítulo "Te esperamos con los brazos abiertos"
 
-### Carrusel de Habitaciones
-- 3 cards en desktop, 1 en mobile
-- Rotación automática cada 5 segundos
-- Arrastre con mouse para navegación manual
-- Flechas ◀ ▶ y dots indicadores
+### Habitaciones
+- Grid estático: 3 columnas en desktop, 1 en mobile
+- Pelotitas indicadoras debajo del grid (1 por habitación, primera naranja)
+- Cada card navega a `/habitacion/:id` al hacer click
 - Badge verde "Disponible" / rojo "Ocupada"
 - Precio calculado: $15.000 × capacidad
+
+### Página de detalle de habitación
+- Imagen grande, descripción, servicios y precio
+- Botón "Reservar" que abre modal con formulario
+- Si la habitación está ocupada, muestra "No disponible" en vez del botón
+
+### Modal de reserva
+- Campos: nombre, DNI, teléfono, cantidad de huéspedes, fecha de llegada
+- Validación: la cantidad no puede superar la capacidad de la habitación
+- Al enviar, se inserta una reserva con estado `pendiente` en Supabase
 
 ### Galería
 - Fondo color Arena `#DDC2A5`
@@ -211,11 +223,18 @@ Todas las rutas excepto `/admin` usan el Layout compartido (Navbar + Footer).
 - Página de galería: grid 3 columnas con modal al hacer click
 
 ### Panel Administrador (`/admin`)
-- **Login** con código secreto desde tabla `config` en Supabase
-- **Gestión de habitaciones**: crear, editar, eliminar (subida de imágenes a Storage)
+- **Login** con código secreto desde tabla `config` en Supabase (código: `tinogasta2024`)
+- **Gestión de habitaciones**: crear, editar, eliminar con subida de imágenes a Storage
+  - Servicios por tags seleccionables (WiFi, TV, Calefacción, A/A, A/A F&C, Baño Priv., Amenities)
 - **Gestión de galería**: subir y eliminar imágenes
-- **Bandeja de reservas**: filtrar por estado, aprobar o rechazar
-- Sesión persistente en `sessionStorage`
+- **Bandeja de reservas**: filtros por estado (Pendientes / Confirmadas / Ocupadas / Rechazadas / Todas)
+  - Pendientes: botones Aprobar / Rechazar
+  - Confirmadas: botón Cancelar (pide motivo)
+  - Ocupadas: botón Marcar disponible (libera la habitación)
+  - Rechazadas: botón Eliminar (borra permanentemente)
+- Al aprobar una reserva, la habitación se marca como no disponible automáticamente
+- Al marcar disponible, la habitación vuelve a estar disponible para reservar
+- Sesión se borra al recargar la página
 
 ---
 
@@ -227,7 +246,7 @@ Todas las rutas excepto `/admin` usan el Layout compartido (Navbar + Footer).
 |---|---|
 | `habitaciones` | id, nombre, descripcion, servicios(text[]), precio, capacidad, imagen_url, disponible, created_at |
 | `galeria` | id, imagen_url, descripcion, created_at |
-| `reservas` | id, nombre, email, telefono, habitacion_id, fecha_entrada, fecha_salida, estado(pendiente/confirmada/rechazada), created_at |
+| `reservas` | id, nombre, dni, telefono, habitacion_id, cantidad_huespedes, fecha_llegada, estado(pendiente/confirmada/rechazada), motivo_cancelacion, created_at |
 | `config` | id, clave, valor |
 
 ### Storage
