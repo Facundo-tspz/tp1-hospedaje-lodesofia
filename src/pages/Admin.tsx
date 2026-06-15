@@ -620,7 +620,7 @@ const AdminReservas = () => {
         Reservas
       </h2>
 
-      <div className="flex gap-2 mb-6">
+      <div className="flex flex-wrap gap-2 mb-6">
         {['pendiente', 'confirmada', 'ocupadas', 'rechazada', 'todas'].map((f) => (
           <button
             key={f}

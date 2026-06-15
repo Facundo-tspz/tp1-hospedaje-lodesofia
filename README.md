@@ -1,6 +1,6 @@
 # Lo de Sofía - Hospedaje
 
-Sitio web del hospedaje "Lo de Sofía" en Tinogasta, Catamarca. Desarrollado con React + TypeScript como trabajo práctico para la materia Desarrollo Web de la Tecnicatura Superior en Desarrollo de Software.
+Sitio web del hospedaje "Lo de Sofía" en Tinogasta, Catamarca. Desarrollado con React + TypeScript como trabajo práctico integrador para la materia Desarrollo Web II de la Tecnicatura Superior en Desarrollo de Software.
 
 ---
 
@@ -109,42 +109,73 @@ npm create vite@latest . -- --template react-ts
 
 Esto genera la estructura base con React 19 + TypeScript + Vite.
 
-### Componentización
+### Decisión del framework
 
-La aplicación se organiza en componentes funcionales reutilizables:
+Se eligió **React** sobre Vue o Angular por las siguientes razones:
+
+- **Ecosistema y comunidad:** React es el framework frontend más utilizado, con amplia documentación, bibliotecas de terceros y soporte en la industria.
+- **Flexibilidad:** React es una biblioteca, no un framework completo, lo que permite elegir herramientas complementarias (Vite, React Router, Tailwind) sin imponer una estructura rígida.
+- **Curva de aprendizaje:** Al estar orientado a componentes funcionales con hooks, resulta más directo para proyectos académicos que requieren resultados rápidos sin perder buenas prácticas.
+- **Salida laboral:** El conocimiento de React es actualmente el más demandado en el mercado laboral para desarrollo frontend.
+
+### Arquitectura del sitio
+
+El proyecto sigue una arquitectura basada en componentes funcionales de React, organizada de la siguiente manera:
 
 ```
-src/
-├── components/          # Componentes reutilizables
-│   ├── Navbar.tsx       # Barra de navegación sticky con hamburguesa
-│   ├── Hero.tsx         # Hero con imagen, overlay azul y eslogan
-│   ├── CardHabitacion.tsx  # Card de habitación con badge disponible/ocupada
-│   ├── Habitaciones.tsx    # Grid estático de habitaciones con pelotitas indicadoras
-│   ├── Galeria.tsx         # Flyer automático con flechas y dots
-│   ├── Footer.tsx          # Pie de página con logo, contacto e íconos
-│   └── ModalReserva.tsx    # Modal de formulario de reserva con validación
+tp1-hospedaje-lodesofia/
+├── public/                # Archivos estáticos (imágenes, favicon)
+│   ├── hero-tinogasta.webp
+│   ├── icono.png
+│   ├── logo.png
+│   └── logo-alterno.png
 │
-├── pages/               # Páginas del sitio
-│   ├── Inicio.tsx       # Página principal (Hero + Habitaciones + Galería)
-│   ├── Admin.tsx        # Panel administrador (login + CRUD + bandeja)
-│   ├── SobreNosotros.tsx  # Información del hospedaje con logo e íconos
-│   ├── PreguntasFrecuentes.tsx  # FAQ con acordeón e íconos
-│   ├── AcercaDelSistema.tsx     # Info del desarrollador y tecnologías
-│   ├── GaleriaPage.tsx  # Galería completa con grid y modal
-│   └── HabitacionDetalle.tsx  # Página de detalle con botón de reserva
-│
-├── layout/
-│   └── Layout.tsx       # Layout con Navbar + Outlet + Footer
-│
-├── supabase/
-│   └── client.ts        # Conexión a Supabase
-│
-├── types/               # Interfaces de TypeScript
-├── assets/fonts/        # Fuentes Farley MF y Fonseca Light
-├── App.tsx              # Componente raíz con todas las rutas
-├── main.tsx             # Punto de entrada
-└── index.css            # Tailwind + @font-face + @theme
+├── src/
+│   ├── components/        # Componentes reutilizables
+│   │   ├── Navbar.tsx       # Barra de navegación sticky con hamburguesa
+│   │   ├── Hero.tsx         # Hero con imagen de fondo y eslogan
+│   │   ├── CardHabitacion.tsx  # Card individual de cada habitación
+│   │   ├── Habitaciones.tsx    # Grid de habitaciones con pelotitas indicadoras
+│   │   ├── Galeria.tsx         # Flyer de imágenes en la página principal
+│   │   ├── Footer.tsx          # Pie de página con contacto e íconos
+│   │   └── ModalReserva.tsx    # Modal con formulario de reserva
+│   │
+│   ├── pages/             # Páginas completas del sitio
+│   │   ├── Inicio.tsx
+│   │   ├── Admin.tsx
+│   │   ├── SobreNosotros.tsx
+│   │   ├── PreguntasFrecuentes.tsx
+│   │   ├── AcercaDelSistema.tsx
+│   │   ├── GaleriaPage.tsx
+│   │   └── HabitacionDetalle.tsx
+│   │
+│   ├── layout/
+│   │   └── Layout.tsx     # Layout compartido (Navbar + contenido + Footer)
+│   │
+│   ├── supabase/
+│   │   └── client.ts      # Conexión a Supabase
+│   │
+│   ├── assets/fonts/      # Fuentes personalizadas Farley MF y Fonseca Light
+│   ├── App.tsx            # Componente raíz con definición de rutas
+│   ├── main.tsx           # Punto de entrada de la aplicación
+│   └── index.css          # Estilos globales (Tailwind + fuentes)
 ```
+
+#### Enrutamiento
+
+Se utiliza React Router DOM v6 con rutas anidadas. Todas las rutas públicas (`/`, `/habitacion/:id`, `/sobre-nosotros`, `/preguntas-frecuentes`, `/acerca-del-sistema`, `/galeria`) comparten un Layout común con Navbar y Footer. La ruta `/admin` es independiente y no utiliza el Layout.
+
+#### Flujo de datos
+
+- Los datos se obtienen de Supabase (PostgreSQL) mediante consultas asincrónicas.
+- Los componentes usan hooks (`useState`, `useEffect`) para manejar el estado local y la carga de datos.
+- Las imágenes se almacenan en Supabase Storage (carpetas `habitaciones/` y `galeria/`).
+- El formulario de reserva inserta datos directamente en la tabla `reservas`.
+- El panel admin permite operaciones CRUD sobre habitaciones, galería y reservas.
+
+#### Autenticación
+
+El acceso al panel admin se controla mediante un código secreto almacenado en la tabla `config` de Supabase (código: `tinogasta2024`). No se utiliza Supabase Auth. La sesión se mantiene en `sessionStorage` y se borra al recargar la página.
 
 ---
 
