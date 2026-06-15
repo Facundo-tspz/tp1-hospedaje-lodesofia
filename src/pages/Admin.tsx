@@ -24,12 +24,13 @@ interface GaleriaImagen {
 interface Reserva {
   id: string
   nombre: string
-  email: string
+  dni: string
   telefono: string
   habitacion_id: string
-  fecha_entrada: string
-  fecha_salida: string
+  cantidad_huespedes: number
+  fecha_llegada: string
   estado: string
+  motivo_cancelacion?: string
 }
 
 const Admin = () => {
@@ -567,15 +568,42 @@ const AdminReservas = () => {
       .order('created_at', { ascending: false })
 
     if (filtro !== 'todas') {
-      query.eq('estado', filtro)
+      query.eq('estado', filtro === 'ocupadas' ? 'confirmada' : filtro)
     }
 
     const { data } = await query
     if (data) setReservas(data)
   }
 
-  const cambiarEstado = async (id: string, estado: string) => {
+  const cambiarEstado = async (id: string, estado: string, habitacion_id?: string) => {
+    if (estado === 'confirmada' && habitacion_id) {
+      await supabase.from('habitaciones').update({ disponible: false }).eq('id', habitacion_id)
+    }
     await supabase.from('reservas').update({ estado }).eq('id', id)
+    cargarReservas()
+  }
+
+  const handleCancelar = async (id: string) => {
+    const motivo = prompt('Motivo de cancelación:')
+    if (!motivo || !motivo.trim()) return
+    await supabase.from('reservas').update({ estado: 'rechazada', motivo_cancelacion: motivo.trim() }).eq('id', id)
+    cargarReservas()
+  }
+
+  const handleEliminarReserva = async (id: string) => {
+    if (!confirm('¿Eliminar esta reserva permanentemente?')) return
+    const { error } = await supabase.from('reservas').delete().eq('id', id)
+    if (error) {
+      alert('Error al eliminar: ' + error.message)
+      console.error(error)
+      return
+    }
+    cargarReservas()
+  }
+
+  const handleMarcarDisponible = async (id: string, habitacion_id: string) => {
+    await supabase.from('habitaciones').update({ disponible: true }).eq('id', habitacion_id)
+    await supabase.from('reservas').update({ estado: 'rechazada', motivo_cancelacion: 'Estadía finalizada' }).eq('id', id)
     cargarReservas()
   }
 
@@ -586,7 +614,7 @@ const AdminReservas = () => {
       </h2>
 
       <div className="flex gap-2 mb-6">
-        {['pendiente', 'confirmada', 'rechazada', 'todas'].map((f) => (
+        {['pendiente', 'confirmada', 'ocupadas', 'rechazada', 'todas'].map((f) => (
           <button
             key={f}
             onClick={() => setFiltro(f)}
@@ -596,7 +624,7 @@ const AdminReservas = () => {
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
           >
-            {f === 'pendiente' ? 'Pendientes' : f === 'todas' ? 'Todas' : f.charAt(0).toUpperCase() + f.slice(1)}
+            {f === 'pendiente' ? 'Pendientes' : f === 'ocupadas' ? 'Ocupadas' : f === 'todas' ? 'Todas' : f.charAt(0).toUpperCase() + f.slice(1)}
           </button>
         ))}
       </div>
@@ -610,12 +638,19 @@ const AdminReservas = () => {
                   {res.nombre}
                 </p>
                 <p className="font-fonseca text-sm text-gray-600">
-                  {habitaciones[res.habitacion_id] || 'Habitación'} · {res.fecha_entrada} al{' '}
-                  {res.fecha_salida}
+                  {habitaciones[res.habitacion_id] || 'Habitación'} · {res.cantidad_huespedes} {res.cantidad_huespedes === 1 ? 'huésped' : 'huéspedes'}
                 </p>
                 <p className="font-fonseca text-sm text-gray-500">
-                  {res.email} · {res.telefono}
+                  DNI: {res.dni} · Tel: {res.telefono}
                 </p>
+                <p className="font-fonseca text-sm text-gray-500">
+                  Llegada: {res.fecha_llegada ? new Date(res.fecha_llegada).toLocaleDateString('es-AR') : 'Sin fecha'}
+                </p>
+                {res.estado === 'rechazada' && res.motivo_cancelacion && (
+                  <p className="font-fonseca text-xs text-red-400 italic mt-1">
+                    Motivo: {res.motivo_cancelacion}
+                  </p>
+                )}
               </div>
 
               <div className="flex items-center gap-3">
@@ -634,7 +669,7 @@ const AdminReservas = () => {
                 {res.estado === 'pendiente' && (
                   <div className="flex gap-2">
                     <button
-                      onClick={() => cambiarEstado(res.id, 'confirmada')}
+                      onClick={() => cambiarEstado(res.id, 'confirmada', res.habitacion_id)}
                       className="text-xs px-3 py-1.5 rounded-lg bg-green-600 text-white hover:bg-green-700 transition"
                     >
                       Aprobar
@@ -646,6 +681,33 @@ const AdminReservas = () => {
                       Rechazar
                     </button>
                   </div>
+                )}
+
+                {res.estado === 'confirmada' && filtro !== 'ocupadas' && (
+                  <button
+                    onClick={() => handleCancelar(res.id)}
+                    className="text-xs px-3 py-1.5 rounded-lg bg-red-500 text-white hover:bg-red-600 transition"
+                  >
+                    Cancelar
+                  </button>
+                )}
+
+                {res.estado === 'confirmada' && filtro === 'ocupadas' && (
+                  <button
+                    onClick={() => handleMarcarDisponible(res.id, res.habitacion_id)}
+                    className="text-xs px-3 py-1.5 rounded-lg bg-green-600 text-white hover:bg-green-700 transition"
+                  >
+                    Marcar disponible
+                  </button>
+                )}
+
+                {res.estado === 'rechazada' && (
+                  <button
+                    onClick={() => handleEliminarReserva(res.id)}
+                    className="text-xs px-3 py-1.5 rounded-lg bg-gray-600 text-white hover:bg-gray-700 transition"
+                  >
+                    Eliminar
+                  </button>
                 )}
               </div>
             </div>

@@ -21,13 +21,13 @@ const CardHabitacion = ({ habitacion }: Props) => {
   return (
     <Link
       to={`/habitacion/${habitacion.id}`}
-      className="block bg-white rounded-2xl shadow-md overflow-hidden min-w-[300px] md:min-w-0 flex-1 hover:shadow-xl transition-shadow duration-300"
+      className="block bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 h-full"
     >
       <div className="relative">
         <img
           src={habitacion.imagen_url || '/placeholder.webp'}
           alt={habitacion.nombre}
-          className="w-full h-48 object-cover"
+          className="w-full h-36 md:h-40 object-cover"
         />
         <span
           className={`absolute top-3 left-3 text-xs font-semibold px-3 py-1 rounded-full ${
@@ -40,8 +40,8 @@ const CardHabitacion = ({ habitacion }: Props) => {
         </span>
       </div>
 
-      <div className="p-5 space-y-3">
-        <h3 className="font-farley text-xl" style={{ color: '#034659' }}>
+      <div className="p-4 space-y-2">
+        <h3 className="font-farley text-lg" style={{ color: '#034659' }}>
           {habitacion.nombre}
         </h3>
 
@@ -49,23 +49,26 @@ const CardHabitacion = ({ habitacion }: Props) => {
           {habitacion.descripcion}
         </p>
 
-        <div className="flex flex-wrap gap-2">
-          {habitacion.servicios?.map((servicio) => (
+        <div className="flex flex-wrap gap-1.5">
+          {habitacion.servicios?.slice(0, 4).map((servicio) => (
             <span
               key={servicio}
-              className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-md"
+              className="text-[11px] bg-gray-100 text-gray-600 px-2 py-0.5 rounded-md"
             >
               {servicio}
             </span>
           ))}
+          {habitacion.servicios && habitacion.servicios.length > 4 && (
+            <span className="text-[11px] text-gray-400">+{habitacion.servicios.length - 4}</span>
+          )}
         </div>
 
         <div className="flex items-center justify-between pt-2 border-t border-gray-100">
-          <p className="font-fonseca text-sm text-gray-500">
-            Hasta {habitacion.capacidad} {habitacion.capacidad === 1 ? 'persona' : 'personas'}
+          <p className="font-fonseca text-xs text-gray-500">
+            {habitacion.capacidad} {habitacion.capacidad === 1 ? 'persona' : 'pers.'}
           </p>
-          <p className="font-farley text-lg" style={{ color: '#D9831A' }}>
-            ${precioTotal.toLocaleString('es-AR')}/noche
+          <p className="font-farley text-base" style={{ color: '#D9831A' }}>
+            ${precioTotal.toLocaleString('es-AR')}
           </p>
         </div>
       </div>

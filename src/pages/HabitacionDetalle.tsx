@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { supabase } from '../supabase/client'
+import ModalReserva from '../components/ModalReserva'
 
 interface Habitacion {
   id: string
@@ -17,6 +18,7 @@ const HabitacionDetalle = () => {
   const { id } = useParams<{ id: string }>()
   const [habitacion, setHabitacion] = useState<Habitacion | null>(null)
   const [loading, setLoading] = useState(true)
+  const [mostrarModal, setMostrarModal] = useState(false)
 
   useEffect(() => {
     const fetchHabitacion = async () => {
@@ -107,14 +109,29 @@ const HabitacionDetalle = () => {
             </p>
           </div>
 
-          <button
-            className="w-full py-3 rounded-xl font-farley text-lg text-white transition-all duration-300 hover:brightness-110"
-            style={{ backgroundColor: '#D9831A' }}
-          >
-            Reservar
-          </button>
+          {habitacion.disponible ? (
+            <button
+              onClick={() => setMostrarModal(true)}
+              className="w-full py-3 rounded-xl font-farley text-lg text-white transition-all duration-300 hover:brightness-110"
+              style={{ backgroundColor: '#D9831A' }}
+            >
+              Reservar
+            </button>
+          ) : (
+            <p className="w-full py-3 rounded-xl font-fonseca text-base text-gray-400 bg-gray-100 text-center">
+              No disponible
+            </p>
+          )}
         </div>
       </div>
+
+      {mostrarModal && (
+        <ModalReserva
+          habitacion={habitacion}
+          onClose={() => setMostrarModal(false)}
+          onSuccess={() => setMostrarModal(false)}
+        />
+      )}
     </section>
   )
 }
