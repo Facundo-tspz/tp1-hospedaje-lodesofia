@@ -325,7 +325,7 @@ La estructura del sitio utiliza etiquetas semánticas de HTML5:
 | Funcionalidad | Estado |
 |---|---|
 | Notificaciones por email al recibir una reserva (EmailJS) | Pendiente |
-| Despliegue en Vercel / Netlify | Pendiente |
+| Despliegue en Netlify | ✅ Completado |
 | Modal de reserva con fecha de salida y validación de disponibilidad por rango de fechas | Pendiente |
 | Pestaña "Ocupadas" en admin con auto-liberación al pasar la fecha de salida | Pendiente |
 | Componente Badge flotante global con indicador de disponibilidad general | Pendiente |
@@ -369,7 +369,9 @@ El proyecto utiliza Git para control de versiones con commits convencionales sig
 
 ### Cloud Deployment
 
-(pendiente)
+El sitio se despliega automáticamente en **Netlify** desde el repositorio de GitHub. Cada push a la rama `main` dispara un nuevo build y deploy.
+
+URL de producción: [https://lo-de-sofia.netlify.app/](https://lo-de-sofia.netlify.app/)
 
 ---
 
@@ -378,5 +380,5 @@ El proyecto utiliza Git para control de versiones con commits convencionales sig
 | Entregable | URL |
 |---|---|
 | Repositorio GitHub | [https://github.com/Facundo-tspz/tp1-hospedaje-lodesofia](https://github.com/Facundo-tspz/tp1-hospedaje-lodesofia) |
-| Sitio en producción | (pendiente) |
+| Sitio en producción | [https://lo-de-sofia.netlify.app/](https://lo-de-sofia.netlify.app/) |
 | Documento técnico | Este archivo `README.md` |
