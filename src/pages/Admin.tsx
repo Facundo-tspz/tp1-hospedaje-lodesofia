@@ -100,6 +100,13 @@ const Admin = () => {
           >
             Ingresar
           </button>
+
+          <Link
+            to="/"
+            className="block text-center font-fonseca text-sm text-gray-400 hover:text-[#D9831A] transition"
+          >
+            Volver al inicio
+          </Link>
         </form>
       </div>
     )
