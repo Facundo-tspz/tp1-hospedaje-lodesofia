@@ -275,7 +275,7 @@ Todas las rutas excepto `/admin` usan el Layout compartido (Navbar + Footer).
 - Materia: Desarrollo Web II — Prof. Barrionuevo A. Camila
 
 ### Panel Administrador (`/admin`)
-- **Login** con código secreto desde tabla `config` en Supabase (código: `tinogasta2024`)
+- **Login** con código secreto desde tabla `config` en Supabase (Epecifcado en el documento de Classroom)
 - **Gestión de habitaciones**: crear, editar, eliminar con subida de imágenes a Storage
   - Servicios por tags seleccionables (WiFi, TV, Calefacción, A/A, A/A F&C, Baño Priv., Amenities)
 - **Gestión de galería**: subir y eliminar imágenes
