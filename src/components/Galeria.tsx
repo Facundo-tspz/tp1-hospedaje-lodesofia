@@ -10,6 +10,7 @@ interface GaleriaImagen {
 
 const Galeria = () => {
   const [imagenes, setImagenes] = useState<GaleriaImagen[]>([])
+  const [loading, setLoading] = useState(true)
   const [currentIndex, setCurrentIndex] = useState(0)
 
   useEffect(() => {
@@ -19,6 +20,7 @@ const Galeria = () => {
         .select('*')
         .order('created_at', { ascending: true })
       if (data) setImagenes(data)
+      setLoading(false)
     }
     fetchImagenes()
   }, [])
@@ -39,7 +41,11 @@ const Galeria = () => {
     <section className="py-16" style={{ backgroundColor: '#DDC2A5' }}>
       <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center gap-8">
         <div className="w-full md:w-[60%]">
-          {imagenes.length === 0 ? (
+          {loading ? (
+            <div className="bg-white/60 rounded-2xl h-72 md:h-96 animate-pulse flex items-center justify-center">
+              <div className="w-12 h-12 rounded-full bg-gray-200" />
+            </div>
+          ) : imagenes.length === 0 ? (
             <div className="bg-white/60 rounded-2xl h-72 flex items-center justify-center">
               <p className="font-fonseca text-gray-600">Galería próximamente</p>
             </div>

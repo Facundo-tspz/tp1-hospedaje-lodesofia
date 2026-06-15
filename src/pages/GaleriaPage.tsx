@@ -7,8 +7,13 @@ interface GaleriaImagen {
   descripcion: string | null
 }
 
+const SkeletonImage = () => (
+  <div className="rounded-2xl overflow-hidden shadow-md h-64 bg-gray-200 animate-pulse" />
+)
+
 const GaleriaPage = () => {
   const [imagenes, setImagenes] = useState<GaleriaImagen[]>([])
+  const [loading, setLoading] = useState(true)
   const [selected, setSelected] = useState<string | null>(null)
 
   useEffect(() => {
@@ -18,6 +23,7 @@ const GaleriaPage = () => {
         .select('*')
         .order('created_at', { ascending: true })
       if (data) setImagenes(data)
+      setLoading(false)
     }
     fetchImagenes()
   }, [])
@@ -28,7 +34,13 @@ const GaleriaPage = () => {
         Galería
       </h1>
 
-      {imagenes.length === 0 ? (
+      {loading ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <SkeletonImage key={i} />
+          ))}
+        </div>
+      ) : imagenes.length === 0 ? (
         <p className="font-fonseca text-gray-500">No hay imágenes en la galería aún.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

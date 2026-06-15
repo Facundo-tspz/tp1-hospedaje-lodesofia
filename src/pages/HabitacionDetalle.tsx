@@ -36,9 +36,33 @@ const HabitacionDetalle = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="font-fonseca text-gray-500">Cargando...</p>
-      </div>
+      <section className="max-w-4xl mx-auto px-4 py-12 animate-pulse">
+        <div className="h-4 bg-gray-200 rounded w-32 mb-6" />
+        <div className="bg-white rounded-3xl shadow-lg overflow-hidden">
+          <div className="h-72 md:h-96 bg-gray-200" />
+          <div className="p-6 md:p-8 space-y-6">
+            <div className="h-8 bg-gray-200 rounded w-3/4" />
+            <div className="space-y-2">
+              <div className="h-4 bg-gray-200 rounded w-full" />
+              <div className="h-4 bg-gray-200 rounded w-5/6" />
+              <div className="h-4 bg-gray-200 rounded w-2/3" />
+            </div>
+            <div className="flex gap-2">
+              <div className="h-8 bg-gray-200 rounded-full w-20" />
+              <div className="h-8 bg-gray-200 rounded-full w-24" />
+              <div className="h-8 bg-gray-200 rounded-full w-16" />
+            </div>
+            <div className="flex justify-between pt-4 border-t border-gray-200">
+              <div className="space-y-1">
+                <div className="h-4 bg-gray-200 rounded w-40" />
+                <div className="h-3 bg-gray-200 rounded w-32" />
+              </div>
+              <div className="h-6 bg-gray-200 rounded w-28" />
+            </div>
+            <div className="h-12 bg-gray-200 rounded-xl w-full" />
+          </div>
+        </div>
+      </section>
     )
   }
 
