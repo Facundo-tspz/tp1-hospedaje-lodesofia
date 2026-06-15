@@ -121,15 +121,15 @@ src/
 │   ├── CardHabitacion.tsx  # Card de habitación con badge disponible/ocupada
 │   ├── Habitaciones.tsx    # Grid estático de habitaciones con pelotitas indicadoras
 │   ├── Galeria.tsx         # Flyer automático con flechas y dots
-│   ├── Footer.tsx          # Pie de página con 3 columnas
+│   ├── Footer.tsx          # Pie de página con logo, contacto e íconos
 │   └── ModalReserva.tsx    # Modal de formulario de reserva con validación
 │
 ├── pages/               # Páginas del sitio
 │   ├── Inicio.tsx       # Página principal (Hero + Habitaciones + Galería)
 │   ├── Admin.tsx        # Panel administrador (login + CRUD + bandeja)
-│   ├── SobreNosotros.tsx
-│   ├── PreguntasFrecuentes.tsx
-│   ├── AcercaDelSistema.tsx
+│   ├── SobreNosotros.tsx  # Información del hospedaje con logo e íconos
+│   ├── PreguntasFrecuentes.tsx  # FAQ con acordeón e íconos
+│   ├── AcercaDelSistema.tsx     # Info del desarrollador y tecnologías
 │   ├── GaleriaPage.tsx  # Galería completa con grid y modal
 │   └── HabitacionDetalle.tsx  # Página de detalle con botón de reserva
 │
@@ -221,6 +221,27 @@ Todas las rutas excepto `/admin` usan el Layout compartido (Navbar + Footer).
 - Flyer automático cada 4 segundos con flechas y dots
 - Botón "Ver Galería" que navega a `/galeria`
 - Página de galería: grid 3 columnas con modal al hacer click
+
+### Footer
+- 3 columnas: logo + nombre con icono, contacto con íconos (teléfono, email, ubicación), sobre nosotros
+- Datos de contacto: +54 3837 456789, lodesofia.hospedaje@gmail.com, Mariano Moreno 661
+
+### Sobre nosotros
+- Texto descriptivo del hospedaje con íconos decorativos al inicio de cada párrafo
+- Logo principal circular con sombra
+- Recuadro inferior con `logo-alterno.png` y texto "Lo de Sofía Hospedaje — Tinogasta, Catamarca"
+
+### Preguntas frecuentes
+- Acordeón con 12 preguntas sobre el hospedaje
+- Cada pregunta tiene un ícono distintivo de `react-icons/io5`
+- Animación suave de apertura y cierre
+- Contenido: horarios, reservas, pagos, estacionamiento, mascotas, WiFi, ubicación, baños, cocina, turismo, cancelación, capacidad
+
+### Acerca del sistema
+- Descripción del proyecto como TP integrador de Desarrollo Web II
+- Cards con íconos para cada tecnología (React, Vite, React Router, Tailwind, Supabase)
+- Información del desarrollador: Facundo Paez, estudiante de 3er año de la Tecnicatura en el IEST
+- Materia: Desarrollo Web II — Prof. Barrionuevo A. Camila
 
 ### Panel Administrador (`/admin`)
 - **Login** con código secreto desde tabla `config` en Supabase (código: `tinogasta2024`)
