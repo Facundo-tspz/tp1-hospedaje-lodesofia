@@ -5,6 +5,7 @@ const navLinks = [
   { label: 'Sobre nosotros', path: '/sobre-nosotros' },
   { label: 'Preguntas frecuentes', path: '/preguntas-frecuentes' },
   { label: 'Acerca del sistema', path: '/acerca-del-sistema' },
+  { label: 'Contacto', path: '/contacto' },
 ]
 
 const Navbar = () => {
