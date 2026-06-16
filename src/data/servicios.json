@@ -1,0 +1,12 @@
+[
+  { "id": 1, "nombre": "WiFi", "icono": "🔴" },
+  { "id": 2, "nombre": "TV", "icono": "📺" },
+  { "id": 3, "nombre": "Calefacción", "icono": "🔥" },
+  { "id": 4, "nombre": "A/A", "icono": "❄️" },
+  { "id": 5, "nombre": "A/A F&C", "icono": "🌡️" },
+  { "id": 6, "nombre": "Baño Priv.", "icono": "🚿" },
+  { "id": 7, "nombre": "Amenities", "icono": "🧴" },
+  { "id": 8, "nombre": "Estacionamiento", "icono": "🅿️" },
+  { "id": 9, "nombre": "Cocina compartida", "icono": "🍳" },
+  { "id": 10, "nombre": "Patio", "icono": "🌿" }
+]

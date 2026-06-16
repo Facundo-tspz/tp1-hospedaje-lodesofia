@@ -1,0 +1,35 @@
+[
+  {
+    "id": "1",
+    "nombre": "Habitación Matrimonial",
+    "descripcion": "Cómoda habitación con cama matrimonial, ideal para parejas. Cuenta con baño privado, aire acondicionado y TV LED. Decoración cálida y vista a la calle principal.",
+    "servicios": ["WiFi", "TV", "A/A", "Baño Priv."],
+    "precio": 15000,
+    "capacidad": 2,
+    "imagen_url": "https://via.placeholder.com/600x400?text=Matrimonial",
+    "disponible": true,
+    "created_at": "2025-01-15T00:00:00Z"
+  },
+  {
+    "id": "2",
+    "nombre": "Habitación Familiar",
+    "descripcion": "Amplia habitación con cama matrimonial y una cucheta, perfecta para familias de hasta 4 personas. Incluye calefacción, WiFi y baño privado.",
+    "servicios": ["WiFi", "TV", "Calefacción", "Baño Priv."],
+    "precio": 30000,
+    "capacidad": 4,
+    "imagen_url": "https://via.placeholder.com/600x400?text=Familiar",
+    "disponible": true,
+    "created_at": "2025-01-15T00:00:00Z"
+  },
+  {
+    "id": "3",
+    "nombre": "Habitación Premium",
+    "descripcion": "La mejor experiencia de hospedaje. Habitación amplia con cama king size, aire acondicionado frío/calor, TV LED, baño privado con amenidades y WiFi de alta velocidad.",
+    "servicios": ["WiFi", "TV", "A/A F&C", "Baño Priv.", "Amenities", "Calefacción"],
+    "precio": 45000,
+    "capacidad": 3,
+    "imagen_url": "https://via.placeholder.com/600x400?text=Premium",
+    "disponible": false,
+    "created_at": "2025-01-15T00:00:00Z"
+  }
+]
