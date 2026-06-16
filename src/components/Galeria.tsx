@@ -53,16 +53,22 @@ const Galeria = () => {
             <div className="relative bg-white/60 rounded-2xl overflow-hidden">
               <button
                 onClick={prev}
-                className="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white/80 shadow flex items-center justify-center text-gray-700 hover:bg-white transition"
+                className="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-white/85 shadow-md flex items-center justify-center text-[#034659] hover:bg-white hover:scale-105 transition-all"
+                aria-label="Anterior"
               >
-                ◀
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
               </button>
 
               <button
                 onClick={next}
-                className="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white/80 shadow flex items-center justify-center text-gray-700 hover:bg-white transition"
+                className="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-white/85 shadow-md flex items-center justify-center text-[#034659] hover:bg-white hover:scale-105 transition-all"
+                aria-label="Siguiente"
               >
-                ▶
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
               </button>
 
               <div className="w-full h-72 md:h-96 overflow-hidden">
