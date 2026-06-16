@@ -361,6 +361,21 @@ El proyecto está diseñado para escalar de forma sencilla:
 
 ---
 
+## Etapa 2 — Planificación y Arquitectura
+
+Documentación técnica detallada del proyecto, creada como parte del Trabajo Práctico N°2:
+
+| Archivo | Contenido |
+|---|---|
+| [`01-planificacion.md`](docs/01-planificacion.md) | Roadmap del proyecto, requerimientos funcionales y no funcionales |
+| [`02-arquitectura-info.md`](docs/02-arquitectura-info.md) | Mapa del sitio (sitemap) y flujo de usuario (user flow) con diagramas Mermaid |
+| [`03-wireframes.md`](docs/03-wireframes.md) | Wireframes de las pantallas principales del sitio |
+| [`04-stack-tecnologico.md`](docs/04-stack-tecnologico.md) | Stack tecnológico completo con justificación de cada componente |
+| [`05-escalabilidad.md`](docs/05-escalabilidad.md) | Análisis de escalabilidad (CAP, RPS, caching, contexto local) |
+| [`06-changelog.md`](docs/06-changelog.md) | Registro de cambios y versiones del proyecto |
+
+---
+
 ## Control de Versiones y Despliegue
 
 ### Git / GitHub
