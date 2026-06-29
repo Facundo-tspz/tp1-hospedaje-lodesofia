@@ -748,6 +748,7 @@ const AdminConsultas = () => {
   const [consultas, setConsultas] = useState<Consulta[]>([])
   const [loading, setLoading] = useState(true)
   const [eliminando, setEliminando] = useState<string | null>(null)
+  const [confirmarEliminar, setConfirmarEliminar] = useState<string | null>(null)
 
   const cargarConsultas = async () => {
     const { data } = await supabase
@@ -767,7 +768,11 @@ const AdminConsultas = () => {
     await supabase.from('consultas').delete().eq('id', id)
     setConsultas((prev) => prev.filter((c) => c.id !== id))
     setEliminando(null)
+    setConfirmarEliminar(null)
   }
+
+  const iniciarEliminar = (id: string) => setConfirmarEliminar(id)
+  const cancelarEliminar = () => setConfirmarEliminar(null)
 
   if (loading) {
     return (
@@ -811,13 +816,30 @@ const AdminConsultas = () => {
                     <span>🕐 {new Date(consulta.created_at).toLocaleString('es-AR')}</span>
                   </div>
                 </div>
-                <button
-                  onClick={() => handleEliminar(consulta.id)}
-                  disabled={eliminando === consulta.id}
-                  className="font-fonseca text-xs text-red-500 hover:text-red-700 transition disabled:opacity-50 shrink-0"
-                >
-                  {eliminando === consulta.id ? 'Eliminando...' : 'Eliminar'}
-                </button>
+                {confirmarEliminar === consulta.id ? (
+                  <div className="flex gap-2 shrink-0">
+                    <button
+                      onClick={() => handleEliminar(consulta.id)}
+                      disabled={eliminando === consulta.id}
+                      className="font-fonseca text-xs text-white bg-red-500 hover:bg-red-600 px-3 py-1.5 rounded-lg transition disabled:opacity-50"
+                    >
+                      {eliminando === consulta.id ? 'Eliminando...' : 'Confirmar'}
+                    </button>
+                    <button
+                      onClick={cancelarEliminar}
+                      className="font-fonseca text-xs text-gray-500 hover:text-gray-700 px-3 py-1.5 rounded-lg border border-gray-300 hover:border-gray-400 transition"
+                    >
+                      Cancelar
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => iniciarEliminar(consulta.id)}
+                    className="font-fonseca text-xs text-red-500 hover:text-red-700 transition shrink-0"
+                  >
+                    Eliminar
+                  </button>
+                )}
               </div>
               <div className="bg-gray-50 rounded-lg p-4">
                 <p className="font-fonseca text-sm text-gray-700 whitespace-pre-wrap">
