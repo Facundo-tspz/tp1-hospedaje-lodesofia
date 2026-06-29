@@ -1,8 +1,14 @@
 import { IoCodeSlash, IoServer, IoGlobe, IoLibrary, IoRocket, IoSchool, IoPerson } from 'react-icons/io5'
+import SEO from '../components/SEO'
 
 const AcercaDelSistema = () => {
   return (
     <section className="max-w-4xl mx-auto px-4 py-16">
+      <SEO
+        title="Acerca del sistema"
+        description="Información técnica del sitio web de Lo de Sofía Hospedaje. Tecnologías utilizadas y datos del desarrollador."
+        url="/acerca-del-sistema"
+      />
       <h1 className="text-4xl font-farley mb-10 text-center" style={{ color: '#034659' }}>
         Acerca del sistema
       </h1>

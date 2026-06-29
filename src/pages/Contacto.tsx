@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import SEO from '../components/SEO'
 
 interface FormData {
   nombre: string
@@ -43,6 +44,11 @@ const Contacto = () => {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-16">
+      <SEO
+        title="Contacto"
+        description="Comunicate con Lo de Sofía Hospedaje en Tinogasta. Teléfono, email, ubicación y formulario de contacto."
+        url="/contacto"
+      />
       <h1 className="text-4xl font-farley text-center mb-2" style={{ color: '#034659' }}>
         Contacto
       </h1>

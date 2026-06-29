@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../supabase/client'
+import SEO from '../components/SEO'
 
 interface GaleriaImagen {
   id: string
@@ -30,6 +31,11 @@ const GaleriaPage = () => {
 
   return (
     <section className="max-w-7xl mx-auto px-4 py-16">
+      <SEO
+        title="Galería"
+        description="Galería de imágenes de Lo de Sofía Hospedaje en Tinogasta. Conocé nuestras instalaciones y espacios."
+        url="/galeria"
+      />
       <h1 className="text-4xl font-farley mb-8" style={{ color: '#034659' }}>
         Galería
       </h1>

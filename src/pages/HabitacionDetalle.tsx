@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { supabase } from '../supabase/client'
 import ModalReserva from '../components/ModalReserva'
+import SEO from '../components/SEO'
 
 interface Habitacion {
   id: string
@@ -78,6 +79,12 @@ const HabitacionDetalle = () => {
 
   return (
     <section className="max-w-4xl mx-auto px-4 py-12">
+      <SEO
+        title={habitacion?.nombre || 'Habitación'}
+        description={`${habitacion?.descripcion?.slice(0, 120) || 'Detalle de habitación'} — $${(15000 * (habitacion?.capacidad || 1)).toLocaleString()} por noche.`}
+        image={habitacion?.imagen_url || undefined}
+        url={`/habitacion/${habitacion?.id || ''}`}
+      />
       <Link
         to="/"
         className="inline-flex items-center gap-2 font-fonseca text-sm text-gray-500 hover:text-[#D9831A] transition mb-6"

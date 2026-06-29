@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../supabase/client'
+import SEO from '../components/SEO'
 
 type Tab = 'habitaciones' | 'galeria' | 'reservas'
 
@@ -70,6 +71,7 @@ const Admin = () => {
   if (!autenticado) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <SEO title="Admin - Login" description="Panel de administración de Lo de Sofía Hospedaje." url="/admin" />
         <form
           onSubmit={handleLogin}
           className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-sm space-y-6"
@@ -114,6 +116,7 @@ const Admin = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <SEO title="Admin - Panel" description="Panel de administración de Lo de Sofía Hospedaje." url="/admin" />
       <header className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <h1 className="text-xl font-farley" style={{ color: '#034659' }}>

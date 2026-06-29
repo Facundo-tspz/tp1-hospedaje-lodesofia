@@ -1,8 +1,14 @@
 import { IoHome, IoMap, IoHeart } from 'react-icons/io5'
+import SEO from '../components/SEO'
 
 const SobreNosotros = () => {
   return (
     <section className="max-w-4xl mx-auto px-4 py-16">
+      <SEO
+        title="Sobre nosotros"
+        description="Conocé más sobre Lo de Sofía Hospedaje en Tinogasta, Catamarca. Un espacio cómodo y acogedor en la Ruta del Adobe."
+        url="/sobre-nosotros"
+      />
       <h1 className="text-4xl font-farley mb-8 text-center" style={{ color: '#034659' }}>
         Sobre nosotros
       </h1>

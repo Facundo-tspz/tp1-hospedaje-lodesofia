@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { IoTimeOutline, IoDocumentTextOutline, IoCardOutline, IoCarOutline, IoPawOutline, IoWifiOutline, IoLocationOutline, IoWaterOutline, IoRestaurantOutline, IoCameraOutline, IoCalendarOutline, IoPeopleOutline } from 'react-icons/io5'
+import SEO from '../components/SEO'
 
 const faqs = [
   {
@@ -71,6 +72,11 @@ const PreguntasFrecuentes = () => {
 
   return (
     <section className="max-w-4xl mx-auto px-4 py-16">
+      <SEO
+        title="Preguntas frecuentes"
+        description="Respondemos las dudas más comunes sobre Lo de Sofía Hospedaje en Tinogasta: horarios, reservas, pagos, estacionamiento y más."
+        url="/preguntas-frecuentes"
+      />
       <h1 className="text-4xl font-farley mb-10 text-center" style={{ color: '#034659' }}>
         Preguntas frecuentes
       </h1>
