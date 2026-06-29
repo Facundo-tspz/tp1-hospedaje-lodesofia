@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { supabase } from '../supabase/client'
 import SEO from '../components/SEO'
 
 interface FormData {
@@ -16,13 +17,30 @@ const Contacto = () => {
     mensaje: '',
   })
   const [enviado, setEnviado] = useState(false)
+  const [error, setError] = useState('')
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setError('')
+
+    const { error: supabaseError } = await supabase.from('consultas').insert([
+      {
+        nombre: formData.nombre.trim(),
+        email: formData.email.trim(),
+        telefono: formData.telefono.trim(),
+        mensaje: formData.mensaje.trim(),
+      },
+    ])
+
+    if (supabaseError) {
+      setError('Hubo un error al enviar el mensaje. Intentalo de nuevo.')
+      return
+    }
+
     setEnviado(true)
   }
 
@@ -158,6 +176,11 @@ const Contacto = () => {
               />
             </div>
 
+            {error && (
+              <p className="font-fonseca text-sm text-red-600 bg-red-50 px-4 py-2 rounded-lg border border-red-200">
+                {error}
+              </p>
+            )}
             <button
               type="submit"
               className="w-full font-fonseca font-semibold text-white py-3 rounded-lg transition hover:opacity-90"
