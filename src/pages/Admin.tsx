@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { supabase } from '../supabase/client'
 import SEO from '../components/SEO'
 
-type Tab = 'habitaciones' | 'galeria' | 'reservas'
+type Tab = 'habitaciones' | 'galeria' | 'reservas' | 'consultas'
 
 interface Habitacion {
   id: string
@@ -141,7 +141,7 @@ const Admin = () => {
 
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex gap-4 mb-8 border-b border-gray-200 pb-4">
-          {(['habitaciones', 'galeria', 'reservas'] as Tab[]).map((t) => (
+          {(['habitaciones', 'galeria', 'reservas', 'consultas'] as Tab[]).map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}
@@ -151,7 +151,7 @@ const Admin = () => {
                   : 'text-gray-600 hover:bg-gray-100'
               }`}
             >
-              {t === 'habitaciones' ? 'Habitaciones' : t === 'galeria' ? 'Galería' : 'Reservas'}
+              {t === 'habitaciones' ? 'Habitaciones' : t === 'galeria' ? 'Galería' : t === 'reservas' ? 'Reservas' : 'Consultas'}
             </button>
           ))}
         </div>
@@ -159,6 +159,7 @@ const Admin = () => {
         {tab === 'habitaciones' && <AdminHabitaciones />}
         {tab === 'galeria' && <AdminGaleria />}
         {tab === 'reservas' && <AdminReservas />}
+        {tab === 'consultas' && <AdminConsultas />}
       </div>
     </div>
   )
@@ -730,6 +731,103 @@ const AdminReservas = () => {
           </p>
         )}
       </div>
+    </div>
+  )
+}
+
+interface Consulta {
+  id: string
+  nombre: string
+  email: string
+  telefono: string | null
+  mensaje: string
+  created_at: string
+}
+
+const AdminConsultas = () => {
+  const [consultas, setConsultas] = useState<Consulta[]>([])
+  const [loading, setLoading] = useState(true)
+  const [eliminando, setEliminando] = useState<string | null>(null)
+
+  const cargarConsultas = async () => {
+    const { data } = await supabase
+      .from('consultas')
+      .select('*')
+      .order('created_at', { ascending: false })
+    if (data) setConsultas(data)
+    setLoading(false)
+  }
+
+  useEffect(() => {
+    cargarConsultas()
+  }, [])
+
+  const handleEliminar = async (id: string) => {
+    setEliminando(id)
+    await supabase.from('consultas').delete().eq('id', id)
+    setConsultas((prev) => prev.filter((c) => c.id !== id))
+    setEliminando(null)
+  }
+
+  if (loading) {
+    return (
+      <div className="space-y-4">
+        {[1, 2, 3].map((i) => (
+          <div key={i} className="bg-white rounded-xl p-6 shadow-sm animate-pulse space-y-3">
+            <div className="h-4 bg-gray-200 rounded w-1/4" />
+            <div className="h-3 bg-gray-200 rounded w-1/3" />
+            <div className="h-3 bg-gray-200 rounded w-full" />
+          </div>
+        ))}
+      </div>
+    )
+  }
+
+  return (
+    <div>
+      <h2 className="text-2xl font-farley mb-6" style={{ color: '#034659' }}>
+        Consultas ({consultas.length})
+      </h2>
+
+      {consultas.length === 0 ? (
+        <p className="font-fonseca text-gray-500 text-center py-12">
+          No hay consultas recibidas.
+        </p>
+      ) : (
+        <div className="space-y-4">
+          {consultas.map((consulta) => (
+            <div
+              key={consulta.id}
+              className="bg-white rounded-xl p-6 shadow-sm border border-gray-100"
+            >
+              <div className="flex items-start justify-between gap-4 mb-3">
+                <div className="space-y-1">
+                  <p className="font-farley text-lg" style={{ color: '#034659' }}>
+                    {consulta.nombre}
+                  </p>
+                  <div className="flex flex-wrap gap-3 text-sm font-fonseca text-gray-500">
+                    <span>✉️ {consulta.email}</span>
+                    {consulta.telefono && <span>📞 {consulta.telefono}</span>}
+                    <span>🕐 {new Date(consulta.created_at).toLocaleString('es-AR')}</span>
+                  </div>
+                </div>
+                <button
+                  onClick={() => handleEliminar(consulta.id)}
+                  disabled={eliminando === consulta.id}
+                  className="font-fonseca text-xs text-red-500 hover:text-red-700 transition disabled:opacity-50 shrink-0"
+                >
+                  {eliminando === consulta.id ? 'Eliminando...' : 'Eliminar'}
+                </button>
+              </div>
+              <div className="bg-gray-50 rounded-lg p-4">
+                <p className="font-fonseca text-sm text-gray-700 whitespace-pre-wrap">
+                  {consulta.mensaje}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
