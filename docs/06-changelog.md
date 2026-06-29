@@ -1,5 +1,27 @@
 # Changelog — Registro de Cambios
 
+## [1.2.0] — 2025-06-16 — Etapa 3: SEO, Seguridad, IA e Integración
+
+### Añadido
+- Componente `SEO.tsx` con Helmet para meta tags dinámicos (title, description, Open Graph, canonical) en cada página
+- Archivos técnicos en `public/`: `robots.txt`, `sitemap.xml`, `_headers`
+- JSON-LD Schema.org LocalBusiness en `index.html`
+- Página de contacto persistente: los mensajes se guardan en tabla `consultas` de Supabase
+- `docs/07-ia-aplicada.md`: bitácora de uso de IA, explicación de Skills/Tool Calling y reflexión crítica
+
+### Modificado
+- `src/main.tsx`: envolver app con `HelmetProvider`
+- `src/supabase/client.ts`: credenciales movidas a variables de entorno (`VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`)
+- `src/pages/Contacto.tsx`: ahora guarda consultas en Supabase con validación y manejo de errores
+- Todas las páginas: agregado componente `SEO` con meta tags específicos
+
+### Seguridad
+- Headers HTTP configurados en `public/_headers`: `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`
+- Claves de API movidas a `.env.local` (ignorado por Git)
+- Formularios con validación del lado del cliente (campos requeridos y sanitización básica)
+
+---
+
 ## [1.1.0] — 2025-06-16 — Etapa 2: Planificación y Arquitectura
 
 ### Añadido

@@ -376,6 +376,35 @@ Documentación técnica detallada del proyecto, creada como parte del Trabajo Pr
 
 ---
 
+## Etapa 3 — SEO, Seguridad e IA Aplicada
+
+Optimizaciones y documentación correspondientes al Trabajo Práctico N°3:
+
+| Archivo | Contenido |
+|---|---|
+| [`07-ia-aplicada.md`](docs/07-ia-aplicada.md) | Bitácora de uso de IA, explicación de Skills/Tool Calling y reflexión crítica |
+| `public/robots.txt` | Reglas de indexación para motores de búsqueda |
+| `public/sitemap.xml` | Mapa XML con todas las rutas del sitio |
+| `public/_headers` | Headers de seguridad HTTP |
+| `src/components/SEO.tsx` | Componente para meta tags dinámicos por página |
+
+### SEO implementado
+- Meta tags (title, description, Open Graph, canonical) en cada página mediante `react-helmet-async`
+- JSON-LD Schema.org LocalBusiness validado
+- `robots.txt` y `sitemap.xml` accesibles desde la URL pública
+- HTML semántico con jerarquía H1-H6 correcta
+
+### Seguridad
+- HTTPS habilitado (Netlify)
+- Headers de seguridad: `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`
+- Credenciales de Supabase en variables de entorno (`.env.local`)
+- Validación de formularios del lado del cliente
+
+### Integración
+- Formulario de contacto persistente: los mensajes se guardan en tabla `consultas` de Supabase (Opción B — BaaS)
+
+---
+
 ## Control de Versiones y Despliegue
 
 ### Git / GitHub
