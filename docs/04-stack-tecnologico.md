@@ -169,6 +169,59 @@ El sitio se despliega en **Netlify** con las siguientes características:
 
 ---
 
+## Seguridad
+
+### Gestión de Credenciales
+
+Las claves de API de Supabase se almacenan en `.env.local` en la raíz del proyecto, excluido del repositorio mediante `.gitignore`. En Netlify se configuran como variables de entorno en el dashboard.
+
+```env
+VITE_SUPABASE_URL=https://rrwjnarejerhqhqqvlkn.supabase.co
+VITE_SUPABASE_ANON_KEY=sb_publishable_oaEvX1WUoI-s3M8c88B4qA_I8evjEUp
+```
+
+**Importante:** Las variables con prefijo `VITE_` se exponen en el bundle del frontend. La `SUPABASE_ANON_KEY` es pública por diseño en Supabase; la seguridad real reside en las políticas RLS de la base de datos, no en ocultar la clave.
+
+### Headers HTTP
+
+Configurados en `public/_headers` para todas las rutas:
+
+| Header | Valor | Previene |
+|---|---|---|
+| `X-Content-Type-Options` | `nosniff` | MIME sniffing |
+| `X-Frame-Options` | `DENY` | Clickjacking (iframe) |
+| `Referrer-Policy` | `strict-origin-when-cross-origin` | Fuga de información en Referer |
+
+### Row Level Security (RLS)
+
+Políticas de acceso a nivel de fila en Supabase:
+
+| Tabla | SELECT | INSERT | UPDATE / DELETE |
+|---|---|---|---|
+| `habitaciones` | Público | Solo admin | Solo admin |
+| `reservas` | Solo admin | Público | Solo admin |
+| `galeria` | Público | Solo admin | Solo admin |
+| `config` | Solo admin | Solo admin | Solo admin |
+| `consultas` | Solo admin | Público | Solo admin |
+
+### Autenticación Admin
+
+El panel se protege con un código secreto almacenado en la tabla `config`. Al ingresar el código correcto, se guarda una bandera en `sessionStorage`. En cada carga de página (`main.tsx`), la sesión se borra forzando un nuevo login. Esto reduce la ventana de exposición si el usuario se aleja de la computadora.
+
+### Validación Frontend
+
+Todos los formularios validan datos antes de enviarlos a Supabase: campos requeridos, formato de email, solo dígitos en DNI, cantidad de huéspedes dentro de la capacidad, fecha no anterior al día actual. No se utilizan librerías externas de validación para mantener el bundle pequeño.
+
+### Puntos Únicos de Falla (SPOF)
+
+| Componente | SPOF | Mitigación |
+|---|---|---|
+| Supabase (BD + Storage) | Sí | Backups automáticos diarios. Frontend estático sigue funcionando sin datos dinámicos. |
+| Netlify (hosting) | Sí | Uptime 99.9%. Posible failover en Vercel o Cloudflare Pages. |
+| GitHub (repositorio) | Sí | Backup local y en otro proveedor (GitLab, Bitbucket). |
+
+---
+
 ## Modelo de Stack Elegido: Jamstack (Stack C)
 
 El proyecto se alinea con el **Stack C – Jamstack** del apunte de cátedra, caracterizado por:
